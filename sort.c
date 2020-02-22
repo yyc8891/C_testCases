@@ -13,6 +13,116 @@ void PrintArry(int A[],int num)
 	
 }
 
+void insert_sort_shell(int A[],int start,int gap)
+{
+    int i=0;
+    int j=0;
+    int k=0;
+    int tmp=0;
+    
+    i = start;
+    j = i-gap;
+    printf("\n i:%d j:%d gap:%d \n",i,j,gap);
+    if(A[i]<A[j] && j>=0)
+    {
+        k = i;
+        while (A[j]>A[k] && j>=0)
+        {
+            tmp = A[j];
+            A[j] = A [k];
+            A[k] = tmp;
+            j-=gap;
+            k-=gap;
+        }
+        PrintArry(A,10);
+    }
+    
+}
+
+void insert_sort_shell_inhanced(int A[],int start,int gap)
+{
+    int insert = A[start];
+    int i = 0;
+    
+    for(i=start-gap; i>=0 && A[i]>insert; i-=gap)
+    {
+        A[i+gap]=A[i];
+    }
+    A[i+gap]=insert;
+    
+    PrintArry(A,10);
+}
+
+void shell_sort(int A[],int num)
+{
+    int gap[10]={0};
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int tmp = num;
+    int gNum = 0;
+    
+    while(tmp>0)
+    {
+        tmp = tmp/2;
+        gap[i]=tmp;
+        i++;
+    }
+    gNum = i;
+    PrintArry(gap,10);
+    
+    i=0;
+// improve shell sort
+    for( i=num/2;i>0;i/=2)
+    {
+        for(j=i;j<num;j++)
+        {
+            printf("\n j:%d gap:%d \n",j,i);
+            insert_sort_shell_inhanced(A,j,i);
+        }
+    }
+    
+#if 0
+    while(gap[i]>0)
+    {
+        for(k=0;k<gNum;k++)
+        {
+            for(j=k;j<num;j+=gap[i])
+            {
+                insert_sort_shell(A,j,gap[i]);
+            }
+        }
+        
+        i++;
+    }
+#endif
+}
+
+void insert_sort_update(int A[],int num)
+{
+    int i=0;
+    int j=0;
+    int k=0;
+    int tmp=0;
+    
+    for(i=1;i<num;i++)
+    {
+        j=i-1;
+        if(A[i]<A[j])
+        {
+            k = i;
+            while (A[j]>A[k] && j>=0)
+            {
+                tmp = A[j];
+                A[j] = A [k];
+                A[k] = tmp;
+                j--;
+                k--;
+            }
+        }
+        PrintArry(A,10);
+    }
+}
 void insert_sort(int A[],int num)
 {
     int i = 0;
@@ -172,7 +282,7 @@ int fast_sort(int A[],int top,int end)
 
 int main(void)
 {
-	int Arry[10]={34,19,234,67,1,111,5,734,50,92};	
+	int Arry[10]={34,19,234,67,1,111,5,734,58,92};
 	int ret = 0;
 	
 	PrintArry(Arry,10);
@@ -185,8 +295,11 @@ int main(void)
 	//printf("\n test for pop sort \n");
 	//pop_sort(Arry,10);
 	
-    printf("\n test for insert sort \n");
-    insert_sort(Arry,10);
+    //printf("\n test for insert sort \n");
+    //insert_sort_update(Arry,10);
+    
+    printf("\n test for shell sort \n");
+    shell_sort(Arry,10);
     
 	//printf("\n ret : %d \n",ret);
 	PrintArry(Arry,10);
